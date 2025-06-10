@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny API Management Calls Without Authentication",
+      "policyType": "BuiltIn",
+      "mode": "All",
+      "description": "This policy denies API Management calls to backends that do not use authentication mechanisms such as certificates or credentials.",
+      "metadata": {
+        "category": "API Management Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.ApiManagement/service/backends"
+            },
+            {
+              "field": "Microsoft.ApiManagement/service/backends/credentials.authorization.scheme",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

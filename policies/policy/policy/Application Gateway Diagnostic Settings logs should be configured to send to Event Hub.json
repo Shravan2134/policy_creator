@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Application Gateway Without Diagnostic Logs Sent to Event Hub",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Application Gateway instances that do not have Diagnostic Logs configured to send to Event Hub.",
+      "metadata": {
+        "category": "Application Gateway Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/applicationGateways"
+            },
+            {
+              "field": "Microsoft.Insights/diagnosticSettings.eventHubAuthorizationRuleId",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

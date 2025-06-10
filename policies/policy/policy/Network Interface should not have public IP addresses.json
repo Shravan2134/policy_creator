@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Network Interfaces with Public IPs",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies network interfaces that are configured with any public IP address.",
+      "metadata": {
+        "category": "Network Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/networkInterfaces"
+            },
+            {
+              "field": "Microsoft.Network/networkInterfaces/ipConfigurations[*].publicIpAddress.id",
+              "exists": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

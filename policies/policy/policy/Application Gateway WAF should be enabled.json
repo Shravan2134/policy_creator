@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Application Gateway Without WAF Enabled",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Application Gateway instances that do not have Web Application Firewall (WAF) enabled.",
+      "metadata": {
+        "category": "Application Gateway Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/applicationGateways"
+            },
+            {
+              "field": "Microsoft.Network/applicationGateways.webApplicationFirewallConfiguration.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Application Gateway Without HTTP to HTTPS Redirection",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Application Gateway instances that do not have HTTP to HTTPS redirection configured.",
+      "metadata": {
+        "category": "Application Gateway Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/applicationGateways"
+            },
+            {
+              "field": "Microsoft.Network/applicationGateways.redirectConfigurations[*].redirectType",
+              "notEquals": "Permanent"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

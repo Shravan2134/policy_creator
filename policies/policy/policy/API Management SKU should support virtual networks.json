@@ -1,0 +1,33 @@
+{
+    "properties": {
+      "displayName": "Deny API Management SKU Without Virtual Network Support",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies API Management instances that are not using a SKU that supports Virtual Network integration.",
+      "metadata": {
+        "category": "API Management Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.ApiManagement/service"
+            },
+            {
+              "field": "Microsoft.ApiManagement/service.sku.name",
+              "notIn": [
+                "Premium",
+                "Developer"
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Application Gateway Without TLS 1.2 or Higher",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Application Gateway instances that do not use TLS version 1.2 or higher.",
+      "metadata": {
+        "category": "Application Gateway Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/applicationGateways"
+            },
+            {
+              "field": "Microsoft.Network/applicationGateways.sslPolicy.minProtocolVersion",
+              "notEquals": "TLSv1_2"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny API Management Without Virtual Network",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies API Management instances that are not deployed inside a Virtual Network.",
+      "metadata": {
+        "category": "API Management Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.ApiManagement/service"
+            },
+            {
+              "field": "Microsoft.ApiManagement/service.virtualNetworkType",
+              "notEquals": "Internal"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  
