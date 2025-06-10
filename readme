@@ -1,0 +1,23 @@
+# Azure Policy Creation
+
+## Overview
+This repository contains Azure Policy definitions designed to enforce governance, security, and compliance across Azure resources. The policies help organizations maintain best practices by restricting non-compliant configurations and ensuring adherence to security standards.
+
+## Features
+- **Deny Policies**: Prevent unauthorized configurations.
+- **Audit Policies**: Identify non-compliant resources.
+- **Enforce Security Standards**: Ensure private link usage, encryption, and access control.
+- **Terraform Integration**: Automate policy deployment.
+
+## Getting Started
+
+### **Prerequisites**
+- Azure Subscription with appropriate permissions.
+- Azure CLI installed (`az` command available).
+- Git installed for version control.
+
+### **Setup**
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Srigopinath-A/Azure_polices.git
+   cd Azure_polices
