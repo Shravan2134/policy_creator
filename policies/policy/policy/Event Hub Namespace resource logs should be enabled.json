@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Event Hub Namespace Without Resource Logs Enabled",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Event Hub namespaces that do not have resource logs enabled.",
+      "metadata": {
+        "category": "Event Hub Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.EventHub/namespaces"
+            },
+            {
+              "field": "Microsoft.Insights/diagnosticSettings.logs.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

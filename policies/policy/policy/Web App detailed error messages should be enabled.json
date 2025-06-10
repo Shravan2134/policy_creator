@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Web Apps Without Detailed Error Messages Enabled",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Web Apps that do not have detailed error messages enabled.",
+      "metadata": {
+        "category": "App Service Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Web/sites"
+            },
+            {
+              "field": "Microsoft.Web/sites/config/web.detailedErrorLoggingEnabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

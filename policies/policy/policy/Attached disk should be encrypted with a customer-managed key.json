@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Attached Disks Without Customer-Managed Key Encryption",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies attached disks that are not encrypted using a customer-managed key.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/disks"
+            },
+            {
+              "field": "Microsoft.Compute/disks.encryption.diskEncryptionSetId",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

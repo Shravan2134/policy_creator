@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Event Hub Instances Without Authorization Rules",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Event Hub instances that do not have Authorization Rules configured.",
+      "metadata": {
+        "category": "Event Hub Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.EventHub/namespaces/eventHubs"
+            },
+            {
+              "field": "Microsoft.EventHub/namespaces/eventHubs.authorizationRules",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

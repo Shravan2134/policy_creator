@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Web Apps Without Incoming Client Certificates",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Web Apps that do not require incoming client certificates for authentication.",
+      "metadata": {
+        "category": "App Service Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Web/sites"
+            },
+            {
+              "field": "Microsoft.Web/sites/clientCertEnabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

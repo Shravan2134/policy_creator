@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Event Hub Without Diagnostic Logs Sent to Event Hub",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Event Hub instances that do not have Diagnostic Settings logs configured to send to Event Hub.",
+      "metadata": {
+        "category": "Event Hub Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.EventHub/namespaces"
+            },
+            {
+              "field": "Microsoft.Insights/diagnosticSettings.eventHubAuthorizationRuleId",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

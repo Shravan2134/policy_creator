@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Web Apps Without Latest HTTP Version",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Web Apps that do not use the latest HTTP version.",
+      "metadata": {
+        "category": "App Service Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Web/sites"
+            },
+            {
+              "field": "Microsoft.Web/sites/config/web.http20Enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  
