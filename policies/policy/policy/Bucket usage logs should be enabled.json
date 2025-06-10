@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Buckets without Usage Logging Enabled",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Cloud Storage Buckets that do not have usage logging enabled.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google Cloud Storage Bucket"
+            },
+            {
+              "field": "Google Cloud Storage Bucket.logging.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

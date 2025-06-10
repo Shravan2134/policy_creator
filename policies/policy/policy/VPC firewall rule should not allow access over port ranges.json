@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny VPC Firewall Rules Allowing Port Ranges",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VPC firewall rules that allow access over port ranges.",
+      "metadata": {
+        "category": "Network Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google Cloud VPC Firewall Rule"
+            },
+            {
+              "field": "Google Cloud VPC Firewall Rule.allowed.ports",
+              "contains": "-"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

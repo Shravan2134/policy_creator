@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Projects Without Proper Audit Log Configuration",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies projects that do not have audit logs properly configured.",
+      "metadata": {
+        "category": "Logging & Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google Cloud Project"
+            },
+            {
+              "field": "Google Cloud Logging.AuditLogs.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

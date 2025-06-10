@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Buckets without Customer-Managed Key Encryption",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Cloud Storage Buckets that are not encrypted using a customer-managed key.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google Cloud Storage Bucket"
+            },
+            {
+              "field": "Google Cloud Storage Bucket.encryption.kmsKeyName",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

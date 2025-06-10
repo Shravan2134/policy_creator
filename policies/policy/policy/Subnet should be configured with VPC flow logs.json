@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Subnets Without VPC Flow Logs",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies subnets that do not have VPC Flow Logs enabled.",
+      "metadata": {
+        "category": "Networking Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google Cloud VPC Subnet"
+            },
+            {
+              "field": "Google Cloud VPC Subnet.flowLogs.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

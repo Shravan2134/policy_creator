@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account Containers with Public Access",
+      "policyType": "Custom",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account containers that allow public access.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts/allowBlobPublicAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

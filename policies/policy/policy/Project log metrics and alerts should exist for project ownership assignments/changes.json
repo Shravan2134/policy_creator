@@ -1,0 +1,34 @@
+{
+    "properties": {
+      "displayName": "Deny Projects Without Log Metrics & Alerts for Ownership Changes",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies projects that do not have log metrics and alerts configured for project ownership assignments/changes.",
+      "metadata": {
+        "category": "Logging & Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google Cloud Project"
+            },
+            {
+              "field": "Google Cloud Logging.MetricFilter",
+              "exists": "false"
+            },
+            {
+              "field": "Google Cloud Monitoring.AlertPolicy",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  
