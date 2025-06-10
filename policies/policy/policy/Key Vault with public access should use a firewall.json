@@ -1,0 +1,34 @@
+{
+    "properties": {
+      "displayName": "Deny Key Vault Without Firewall Enabled",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Key Vault instances that have public access but do not have a firewall enabled.",
+      "metadata": {
+        "category": "Key Vault Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.KeyVault/vaults"
+            },
+            {
+              "field": "Microsoft.KeyVault/vaults.networkAcls.defaultAction",
+              "equals": "Allow"
+            },
+            {
+              "field": "Microsoft.KeyVault/vaults.networkAcls.ipRules[*]",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

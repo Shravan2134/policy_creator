@@ -1,0 +1,33 @@
+{
+    "properties": {
+      "displayName": "Deny Event Hub SKU Without Customer-Managed Key Encryption",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Event Hub namespaces that do not use a SKU supporting customer-managed key encryption.",
+      "metadata": {
+        "category": "Event Hub Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.EventHub/namespaces"
+            },
+            {
+              "field": "Microsoft.EventHub/namespaces.sku.name",
+              "notIn": [
+                "Premium",
+                "Dedicated"
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

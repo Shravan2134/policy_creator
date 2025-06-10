@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Key Vault Without Audit Event Logging",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Key Vault instances that do not have audit event logging enabled.",
+      "metadata": {
+        "category": "Key Vault Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.KeyVault/vaults"
+            },
+            {
+              "field": "Microsoft.Insights/diagnosticSettings.logs.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

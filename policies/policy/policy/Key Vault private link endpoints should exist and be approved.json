@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Key Vault Without Approved Private Link Endpoints",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Key Vault instances that do not have private link endpoints configured and approved.",
+      "metadata": {
+        "category": "Key Vault Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.KeyVault/vaults"
+            },
+            {
+              "field": "Microsoft.KeyVault/vaults.privateEndpointConnections.privateLinkServiceConnectionState.status",
+              "notEquals": "Approved"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

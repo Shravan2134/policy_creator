@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Key Vault With Public Network Access Enabled",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Key Vault instances that have public network access enabled.",
+      "metadata": {
+        "category": "Key Vault Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.KeyVault/vaults"
+            },
+            {
+              "field": "Microsoft.KeyVault/vaults.networkAcls.defaultAction",
+              "equals": "Allow"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  
