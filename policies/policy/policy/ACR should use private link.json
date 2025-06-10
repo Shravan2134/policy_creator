@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny ACR Without Private Link",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies ACR instances that do not use Private Link.",
+      "metadata": {
+        "category": "Container Registry Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.ContainerRegistry/registries"
+            },
+            {
+              "field": "Microsoft.ContainerRegistry/registries.privateEndpointConnections.privateLinkServiceConnectionState.status",
+              "notEquals": "Approved"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

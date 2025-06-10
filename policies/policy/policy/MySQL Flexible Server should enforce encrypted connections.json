@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny MySQL Flexible Server Without Encrypted Connections",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies MySQL Flexible Server instances that do not enforce encrypted connections.",
+      "metadata": {
+        "category": "Database Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.DBforMySQL/flexibleServers"
+            },
+            {
+              "field": "Microsoft.DBforMySQL/flexibleServers.properties.requireSecureTransport",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny ACR With Unrestricted Public Network Access",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies ACR instances that allow unrestricted public network access.",
+      "metadata": {
+        "category": "Container Registry Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.ContainerRegistry/registries"
+            },
+            {
+              "field": "Microsoft.ContainerRegistry/registries.networkRuleSet.defaultAction",
+              "equals": "Allow"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

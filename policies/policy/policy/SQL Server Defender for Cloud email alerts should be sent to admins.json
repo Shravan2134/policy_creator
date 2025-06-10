@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny SQL Server Without Defender for Cloud Email Alerts",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies SQL Server instances that do not have Defender for Cloud email alerts configured for administrators.",
+      "metadata": {
+        "category": "SQL Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Sql/servers"
+            },
+            {
+              "field": "Microsoft.Sql/servers/securityAlertPolicies.emailAddresses",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

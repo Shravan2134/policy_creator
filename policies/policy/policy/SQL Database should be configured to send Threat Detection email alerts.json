@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny SQL Database Without Threat Detection Email Alerts",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies SQL Database instances that do not have Threat Detection email alerts configured.",
+      "metadata": {
+        "category": "SQL Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Sql/servers/databases"
+            },
+            {
+              "field": "Microsoft.Sql/servers/databases.securityAlertPolicies.emailAddresses",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

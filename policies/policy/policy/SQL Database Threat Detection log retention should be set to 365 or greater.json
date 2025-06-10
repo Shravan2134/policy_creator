@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny SQL Database Without Threat Detection Log Retention of 365 Days or Greater",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies SQL Database instances that do not have Threat Detection log retention set to at least 365 days.",
+      "metadata": {
+        "category": "SQL Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Sql/servers/databases"
+            },
+            {
+              "field": "Microsoft.Sql/servers/databases.securityAlertPolicies.retentionDays",
+              "lessThan": 365
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  
