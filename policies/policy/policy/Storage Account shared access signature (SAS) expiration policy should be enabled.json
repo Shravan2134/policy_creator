@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account Without SAS Expiration Policy",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account instances that do not have a shared access signature (SAS) expiration policy enabled.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts.sasPolicy",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

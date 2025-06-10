@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Cosmos DB Without Diagnostic Logs Sent to Event Hub",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Cosmos DB instances that do not have Diagnostic Settings logs configured to send to Event Hub.",
+      "metadata": {
+        "category": "Cosmos DB Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.DocumentDB/databaseAccounts"
+            },
+            {
+              "field": "Microsoft.Insights/diagnosticSettings.eventHubAuthorizationRuleId",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

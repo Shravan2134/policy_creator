@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny PostgreSQL Flexible Server Without 'log_duration' Enabled",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies PostgreSQL Flexible Server instances that do not have 'log_duration' enabled.",
+      "metadata": {
+        "category": "PostgreSQL Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
+            },
+            {
+              "field": "Microsoft.DBforPostgreSQL/flexibleServers.properties.log_duration",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

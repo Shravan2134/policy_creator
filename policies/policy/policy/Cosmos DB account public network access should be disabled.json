@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Cosmos DB With Public Network Access",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Cosmos DB instances that allow public network access.",
+      "metadata": {
+        "category": "Cosmos DB Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.DocumentDB/databaseAccounts"
+            },
+            {
+              "field": "Microsoft.DocumentDB/databaseAccounts.publicNetworkAccess",
+              "equals": "Enabled"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Cosmos DB Without Virtual Network Service Endpoint",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Cosmos DB instances that do not use a virtual network service endpoint.",
+      "metadata": {
+        "category": "Cosmos DB Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.DocumentDB/databaseAccounts"
+            },
+            {
+              "field": "Microsoft.DocumentDB/databaseAccounts.virtualNetworkRules[*].id",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

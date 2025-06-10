@@ -1,0 +1,40 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account File Services Using RC4-HMAC for Kerberos Encryption",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Storage Account instances that use RC4-HMAC encryption for Kerberos authentication in File Services.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {
+        "effect": {
+          "type": "String",
+          "defaultValue": "Deny",
+          "allowedValues": ["Audit", "Deny", "Disabled"],
+          "metadata": {
+            "displayName": "Effect",
+            "description": "The effect determines what happens when the policy rule is evaluated to match."
+          }
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts/fileServices"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts/fileServices/protocolSettings.smb.kerberosTicketEncryption",
+              "contains": "RC4-HMAC"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  
