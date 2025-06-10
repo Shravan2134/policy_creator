@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Project log metrics and alerts should exist for audit configuration changes",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of resources if log metrics and alerts for audit configuration changes do not exist.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Audit"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "*"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "diagnosticSettings[*].logs[*].enabled",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

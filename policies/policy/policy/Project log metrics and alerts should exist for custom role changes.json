@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Project log metrics and alerts should exist for custom role changes",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of custom roles if log metrics and alerts for role changes do not exist.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "IAM"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Authorization/roleDefinitions"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Authorization/roleDefinitions/diagnosticSettings[*].logs[*].enabled",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

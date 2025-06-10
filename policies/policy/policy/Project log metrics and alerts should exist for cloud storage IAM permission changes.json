@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Project log metrics and alerts should exist for cloud storage IAM permission changes",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of cloud storage resources if log metrics and alerts for IAM permission changes do not exist.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Storage"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Storage/storageAccounts/diagnosticSettings[*].logs[*].enabled",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

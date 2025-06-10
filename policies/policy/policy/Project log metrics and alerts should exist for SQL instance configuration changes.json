@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Project log metrics and alerts should exist for SQL instance configuration changes",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of SQL instances if log metrics and alerts for configuration changes do not exist.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "SQL"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Sql/servers"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Sql/servers/diagnosticSettings[*].logs[*].enabled",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
