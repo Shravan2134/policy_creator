@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Bot Service with Public Network Access Enabled",
+    "description": "This policy denies the creation of Bot Service resources where public network access is enabled.",
+    "metadata": {
+      "category": "Network",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.BotService/botServices"
+          },
+          {
+            "field": "Microsoft.BotService/botServices/properties.publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

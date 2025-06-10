@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Bot Service deployment without Private Link",
+    "description": "This policy denies the creation of Bot Service resources that are not configured with Private Link.",
+    "metadata": {
+      "category": "Network",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.BotService/botServices"
+          },
+          {
+            "not": {
+              "field": "Microsoft.BotService/botServices/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

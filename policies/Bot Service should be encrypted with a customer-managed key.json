@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Bot Service Without Customer-Managed Key Encryption",
+    "description": "This policy denies the creation of Bot Service resources that are not encrypted with a customer-managed key.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.BotService/botServices"
+          },
+          {
+            "not": {
+              "field": "Microsoft.BotService/botServices/properties.encryption.keySource",
+              "equals": "Microsoft.KeyVault"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
