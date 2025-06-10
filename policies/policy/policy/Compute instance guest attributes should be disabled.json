@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Compute instance guest attributes should be disabled",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Compute instances if guest attributes are enabled.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Virtual Machine"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "field": "Microsoft.Compute/virtualMachines/guestAttributes.enabled",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

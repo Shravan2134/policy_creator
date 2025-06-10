@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Function App should use the latest HTTP version",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Function App resources if the latest HTTP version is not used.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Function App"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "kind",
+            "contains": "functionapp"
+          },
+          {
+            "field": "Microsoft.Web/sites/siteConfig.http20Enabled",
+            "notEquals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

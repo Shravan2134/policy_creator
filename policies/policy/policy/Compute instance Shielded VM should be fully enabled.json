@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Compute instance Shielded VM should be fully enabled",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Compute instances if Shielded VM is not fully enabled.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Virtual Machine"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Compute/virtualMachines/securityProfile.securityType",
+                "notEquals": "ShieldedVM"
+              },
+              {
+                "field": "Microsoft.Compute/virtualMachines/securityProfile.securityType",
+                "exists": false
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

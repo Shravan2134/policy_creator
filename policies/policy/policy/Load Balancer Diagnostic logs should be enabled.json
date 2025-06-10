@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Load Balancer Diagnostic logs should be enabled",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Load Balancer resources if diagnostic logs are not enabled.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Load Balancer"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/loadBalancers"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Network/loadBalancers/diagnosticSettings[*].enabl`ed",
+                "exists": false
+              },
+              {
+                "field": "Microsoft.Network/loadBalancers/diagnosticSettings[*].enabled",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

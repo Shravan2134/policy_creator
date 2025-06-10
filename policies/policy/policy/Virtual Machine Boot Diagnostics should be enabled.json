@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Virtual Machine Boot Diagnostics should be enabled",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Virtual Machine resources if Boot Diagnostics is not enabled.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Virtual Machine"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Compute/virtualMachines/diagnosticsProfile.bootDiagnostics.enabled",
+                "notEquals": true
+              },
+              {
+                "field": "Microsoft.Compute/virtualMachines/diagnosticsProfile.bootDiagnostics.enabled",
+                "exists": false
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "New disks should be encrypted with CSEK",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of managed disks if customer-managed keys (CSEK) are not used for encryption.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Disks"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/disks"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Compute/disks/encryption.type",
+                "notEquals": "EncryptionAtRestWithCustomerKey"
+              },
+              {
+                "field": "Microsoft.Compute/disks/encryption.type",
+                "exists": false
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
