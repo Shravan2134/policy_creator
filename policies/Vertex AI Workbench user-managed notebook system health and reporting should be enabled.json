@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Vertex AI Workbench notebooks without system health and reporting enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Vertex AI Workbench user-managed notebooks have system health and reporting enabled. Deployments or updates that do not meet this requirement will be denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Vertex/aiWorkbenches"
+          },
+          {
+            "field": "Microsoft.Vertex/aiWorkbenches/properties.systemHealthReporting",
+            "notEquals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

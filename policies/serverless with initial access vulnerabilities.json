@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Deny Publicly Exposed VM/Serverless with Initial Access Vulnerabilities",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Denies the deployment or update of a virtual machine or serverless resource that is publicly exposed and has initial access vulnerabilities. This policy checks for custom security flags (isPubliclyExposed and initialAccessVulnerability) on the resource.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "anyOf": [
+              {
+                "field": "type",
+                "equals": "Microsoft.Compute/virtualMachines"
+              },
+              {
+                "field": "type",
+                "equals": "Microsoft.Web/sites"
+              }
+            ]
+          },
+          {
+            "field": "properties.security.isPubliclyExposed",
+            "equals": true
+          },
+          {
+            "field": "properties.security.initialAccessVulnerability",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

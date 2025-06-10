@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Deny Container Instance Groups without customer-managed encryption",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Container Instance Groups are encrypted with a customer-managed key. Denies any deployment or update where the encryption configuration is missing or not set to use Microsoft Key Vault.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ContainerInstance/containerGroups"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ContainerInstance/containerGroups/encryptionConfiguration",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.ContainerInstance/containerGroups/encryptionConfiguration[*].keySource",
+                "notEquals": "Microsoft.KeyVault"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

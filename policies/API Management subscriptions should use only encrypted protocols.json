@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny API Management subscriptions with non-encrypted protocols",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that API Management subscriptions are configured to use only encrypted protocols (HTTPS). Subscriptions not using HTTPS are denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ApiManagement/service/subscriptions"
+          },
+          {
+            "not": {
+              "field": "Microsoft.ApiManagement/service/subscriptions/properties/protocol",
+              "equals": "https"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny publicly exposed resource with cleartext cloud keys granting external subscription access",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Prevents deployment of any resource that is publicly exposed and has cleartext cloud keys granting permission to access resources in external subscriptions. This helps avoid inadvertent exposure of high-risk credentials.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "properties.publicNetworkAccess",
+            "equals": "Enabled"
+          },
+          {
+            "field": "properties.cloudKeyIsCleartext",
+            "equals": true
+          },
+          {
+            "field": "properties.cloudKeyConfiguration.grantExternalSubscriptionAccess",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

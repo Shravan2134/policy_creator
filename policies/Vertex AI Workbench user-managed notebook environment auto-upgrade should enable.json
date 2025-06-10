@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Vertex AI Workbench notebooks if auto-upgrade is not enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Vertex AI Workbench user-managed notebook environments have auto-upgrade enabled. Deployments where auto-upgrade is not enabled are denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.VertexAI/workbenchNotebooks"
+          },
+          {
+            "not": {
+              "field": "Microsoft.VertexAI/workbenchNotebooks/properties/autoUpgrade/enabled",
+              "equals": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

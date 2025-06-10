@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "displayName": "Deny Cloud Function using deprecated runtime",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Cloud Functions (Azure Functions) do not use deprecated runtime versions. If the runtime version is one of the deprecated values, deployment or update is denied.",
+    "parameters": {
+      "deprecatedRuntimes": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Deprecated Runtime Versions",
+          "description": "List of deprecated runtime versions for Cloud Functions. Deployment is denied if the function uses any of these values."
+        },
+        "defaultValue": [
+          "1.0",
+          "~1",
+          "v1"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "kind",
+            "contains": "functionapp"
+          },
+          {
+            "field": "Microsoft.Web/sites/config/appSettings.FUNCTIONS_EXTENSION_VERSION",
+            "in": "[parameters('deprecatedRuntimes')]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "displayName": "Deny Java Web App not using the latest runtime version",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Java Web Apps use only the latest supported Java runtime version. If the site's Java runtime version does not match the configured approved version, the deployment or update is denied.",
+    "parameters": {
+      "allowedJavaRuntimeVersion": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Allowed Java Runtime Version",
+          "description": "The latest supported Java runtime version (e.g., '11' or '1.8')."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "kind",
+            "contains": "java"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Web/sites/config/siteConfig.javaVersion",
+              "equals": "[parameters('allowedJavaRuntimeVersion')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

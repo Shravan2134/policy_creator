@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Application Gateway WAF Policies not in Prevention mode",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Application Gateway WAF Policies are configured in Prevention mode. If the policy's mode is not set to 'Prevention', the deployment or update is denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies"
+          },
+          {
+            "field": "Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/policySettings.mode",
+            "notEquals": "Prevention"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny Virtual Network Peerings with External Subscriptions",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Denies the creation or update of a virtual network peering if the remote virtual network is located in an external subscription. Only virtual networks located in the allowed subscription are permitted for peering.",
+    "parameters": {
+      "allowedSubscriptionId": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Allowed Subscription ID",
+          "description": "The subscription ID that is allowed for virtual network peerings. Peerings with virtual networks outside of this subscription will be denied."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings/remoteVirtualNetwork.id",
+              "like": "[concat('/subscriptions/', parameters('allowedSubscriptionId'), '/*')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

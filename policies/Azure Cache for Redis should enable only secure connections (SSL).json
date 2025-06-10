@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Azure Cache for Redis if non-SSL connections are enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Azure Cache for Redis supports only secure (SSL) connections by denying any instance that has non-SSL (insecure) connections enabled.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Cache/Redis"
+          },
+          {
+            "field": "Microsoft.Cache/Redis/enableNonSslPort",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

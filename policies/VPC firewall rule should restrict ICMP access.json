@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny NSG rules that allow ICMP access",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that firewall (NSG) rules do not allow ICMP access. Any NSG rule permitting ICMP traffic is denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkSecurityGroups/securityRules"
+          },
+          {
+            "field": "Microsoft.Network/networkSecurityGroups/securityRules/properties/protocol",
+            "equals": "ICMP"
+          },
+          {
+            "field": "Microsoft.Network/networkSecurityGroups/securityRules/properties/access",
+            "equals": "Allow"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

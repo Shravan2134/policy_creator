@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Vertex AI Workbench notebooks with root access enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Vertex AI Workbench user-managed notebook instances do not permit root access. If the 'rootAccessEnabled' property is set to true, the deployment or update is denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Vertex/aiWorkbenches"
+          },
+          {
+            "field": "Microsoft.Vertex/aiWorkbenches/properties/rootAccessEnabled",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

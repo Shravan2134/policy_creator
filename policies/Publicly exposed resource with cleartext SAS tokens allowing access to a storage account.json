@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Deny publicly exposed resource with cleartext SAS tokens granting storage access",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Prevents deployment or update of any resource that is publicly exposed and contains cleartext SAS tokens that grant access to a storage account.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.CustomProviders/sasResources"
+          },
+          {
+            "field": "properties.publicNetworkAccess",
+            "equals": "Enabled"
+          },
+          {
+            "field": "properties.sasTokenIsCleartext",
+            "equals": true
+          },
+          {
+            "field": "properties.sasTokenConfiguration.grantAccessToStorage",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "displayName": "Deny Function Apps with Unsupported Runtime Versions",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Function App deployments use a supported runtime version. The FUNCTIONS_EXTENSION_VERSION setting must be one of the allowed values.",
+    "parameters": {
+      "allowedFunctionAppRuntimeVersions": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed Function App Runtime Versions",
+          "description": "List of supported Function App runtime versions (e.g., '~4', '~3')."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "kind",
+            "like": "*functionapp*"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Web/sites/config/appSettings.FUNCTIONS_EXTENSION_VERSION",
+              "in": "[parameters('allowedFunctionAppRuntimeVersions')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

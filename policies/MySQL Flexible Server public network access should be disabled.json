@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny MySQL Flexible Server with public network access enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that MySQL Flexible Servers have public network access disabled. Deployments with public network access enabled are denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DBforMySQL/flexibleServers"
+          },
+          {
+            "field": "Microsoft.DBforMySQL/flexibleServers/publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

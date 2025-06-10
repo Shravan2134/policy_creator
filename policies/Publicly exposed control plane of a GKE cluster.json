@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny GKE clusters with publicly exposed control plane",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Prevents deployment or update of GKE clusters if the control plane is publicly accessible. The control plane must not be exposed to the public Internet.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.CustomProviders/gkeClusters"
+          },
+          {
+            "field": "Microsoft.CustomProviders/gkeClusters/properties/controlPlane/publicAccess",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

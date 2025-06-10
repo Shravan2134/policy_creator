@@ -1,0 +1,50 @@
+{
+  "properties": {
+    "displayName": "Deny NSG rules that allow access over ports not in the allowed list",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that NSG firewall rules allow access only over specific (approved) ports. Rules with destination port(s) not within the allowed list (e.g., ports 80 and 443 by default) are denied.",
+    "parameters": {
+      "allowedPorts": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed Destination Ports",
+          "description": "The list of allowed destination ports for NSG rules. Only rules specifying these ports are permitted."
+        },
+        "defaultValue": [
+          "80",
+          "443"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkSecurityGroups/securityRules"
+          },
+          {
+            "field": "Microsoft.Network/networkSecurityGroups/securityRules/properties/access",
+            "equals": "Allow"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Network/networkSecurityGroups/securityRules/properties/destinationPortRange",
+                "notIn": "[parameters('allowedPorts')]"
+              },
+              {
+                "field": "Microsoft.Network/networkSecurityGroups/securityRules/properties/destinationPortRanges[*]",
+                "notIn": "[parameters('allowedPorts')]"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

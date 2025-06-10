@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny SQL Server without Microsoft Entra ID (AAD) administrator",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that SQL Servers have an Azure Active Directory (Microsoft Entra ID) administrator configured. If a SQL Server does not have a child administrator resource with administratorType set to 'ActiveDirectory', the deployment or update is denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Sql/servers"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Sql/servers/administrators[*].properties.administratorType",
+              "equals": "ActiveDirectory"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

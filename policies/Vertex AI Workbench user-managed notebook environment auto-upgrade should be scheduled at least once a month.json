@@ -1,0 +1,51 @@
+{
+  "properties": {
+    "displayName": "Deny Vertex AI Workbench Notebooks without timely auto-upgrade scheduling",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Vertex AI Workbench user-managed notebook environments have auto-upgrade enabled and scheduled at least once a month. The policy denies deployments where auto-upgrade is not enabled or the scheduled upgrade interval exceeds the maximum allowed number of days (default is 30).",
+    "parameters": {
+      "maxScheduleDays": {
+        "type": "Integer",
+        "metadata": {
+          "displayName": "Maximum Allowed Schedule Frequency (Days)",
+          "description": "The maximum allowed interval (in days) between auto-upgrades. The notebook environment must schedule an auto-upgrade at least once every this many days. Default is 30 days."
+        },
+        "defaultValue": 30
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.VertexAI/workbenchNotebooks"
+          },
+          {
+            "anyOf": [
+              {
+                "not": {
+                  "field": "Microsoft.VertexAI/workbenchNotebooks/properties/autoUpgrade/enabled",
+                  "equals": true
+                }
+              },
+              {
+                "not": {
+                  "field": "Microsoft.VertexAI/workbenchNotebooks/properties/autoUpgrade/scheduleFrequencyDays",
+                  "exists": "true"
+                }
+              },
+              {
+                "field": "Microsoft.VertexAI/workbenchNotebooks/properties/autoUpgrade/scheduleFrequencyDays",
+                "greaterThan": "[parameters('maxScheduleDays')]"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

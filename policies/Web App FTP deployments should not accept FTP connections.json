@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Web App if FTP connections are allowed",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Prevents the creation or update of a Web App if its configuration permits FTP connections by enforcing that ftpsState must be set to 'Disabled'.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites/config"
+          },
+          {
+            "field": "Microsoft.Web/sites/config/ftpsState",
+            "notEquals": "Disabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

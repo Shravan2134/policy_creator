@@ -1,0 +1,104 @@
+{
+  "properties": {
+    "displayName": "Deny Azure Cache for Redis if firewall rules allow public IPs",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Azure Cache for Redis does not allow access from public IP addresses by requiring that every configured IP rule (in ipRules) is within a private IP range.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Cache/Redis"
+          },
+          {
+            "anyOf": [
+              {
+                "not": {
+                  "anyOf": [
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "10.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "192.168.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.16.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.17.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.18.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.19.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.20.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.21.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.22.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.23.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.24.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.25.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.26.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.27.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.28.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.29.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.30.*"
+                    },
+                    {
+                      "field": "Microsoft.Cache/Redis/ipRules[*]",
+                      "like": "172.31.*"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

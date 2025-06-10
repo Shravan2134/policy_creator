@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Vertex AI Workbench notebooks if JupyterLab file downloading is enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Vertex AI Workbench user-managed notebook instances have the JupyterLab file downloading feature disabled. Deployments where file downloading is enabled are denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.VertexAI/workbenchNotebooks"
+          },
+          {
+            "not": {
+              "field": "Microsoft.VertexAI/workbenchNotebooks/properties/jupyterLab/interface/fileDownloadEnabled",
+              "equals": false
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

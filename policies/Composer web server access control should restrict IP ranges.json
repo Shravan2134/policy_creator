@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Deny Composer web server without restricted IP ranges",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Composer web server access control restricts IP ranges. Deployments are denied if no IP restriction is configured or if the allowed IP rules include an unrestricted entry (e.g. '0.0.0.0/0').",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Composer/composers"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Composer/composers/accessControl.ipRules",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.Composer/composers/accessControl.ipRules",
+                "equals": "[]"
+              },
+              {
+                "field": "Microsoft.Composer/composers/accessControl.ipRules[*]",
+                "equals": "0.0.0.0/0"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Vertex AI Workbench Notebook Disks without backup enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Vertex AI Workbench user-managed notebook disks are configured with backup enabled. Disks where the backup is not enabled are denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.VertexAI/workbenchNotebooks/disks"
+          },
+          {
+            "not": {
+              "field": "Microsoft.VertexAI/workbenchNotebooks/disks/properties/backup/enabled",
+              "equals": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

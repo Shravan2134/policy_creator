@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny publicly exposed resource with cleartext SaaS API keys",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Prevents deployment or update of any resource that is publicly exposed and contains cleartext SaaS API keys. This helps avoid inadvertent exposure of sensitive credentials.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.CustomProviders/saasResources"
+          },
+          {
+            "field": "properties.publicNetworkAccess",
+            "equals": "Enabled"
+          },
+          {
+            "field": "properties.saasApiKeyIsCleartext",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

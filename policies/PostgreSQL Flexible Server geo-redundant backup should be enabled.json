@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny PostgreSQL Flexible Servers without geo-redundant backup enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that PostgreSQL Flexible Servers have geo-redundant backup enabled. Deployments where backup.geoRedundantBackup is not set to 'Enabled' are denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DBforPostgreSQL/flexibleServers"
+          },
+          {
+            "field": "Microsoft.DBforPostgreSQL/flexibleServers/backup.geoRedundantBackup",
+            "notEquals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
