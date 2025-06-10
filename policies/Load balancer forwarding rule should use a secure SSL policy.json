@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "displayName": "Deny Load Balancer Forwarding Rule Without Secure SSL Policy",
+    "description": "This policy denies the creation or update of a load balancer (e.g. an Application Gateway) if its SSL policy is not set to one of the approved secure policies. The SSL policy, defined by the property 'sslPolicy.policyName', must match one of the allowed secure values.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "allowedSslPolicyNames": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed Secure SSL Policy Names",
+          "description": "The list of secure SSL policy names that the load balancer must use. Update this list as needed."
+        },
+        "defaultValue": [
+          "AppGwSslPolicy20170401",
+          "AppGwSslPolicy20170401S"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/applicationGateways"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Network/applicationGateways/sslPolicy.policyName",
+              "in": "[parameters('allowedSslPolicyNames')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "properties": {
+    "displayName": "Deny NSG Rule Allowing Inbound HTTP (TCP Port 80)",
+    "description": "This policy denies NSG deployments that include any inbound security rule permitting TCP traffic on port 80, ensuring that HTTP access from the Internet is restricted.",
+    "metadata": {
+      "category": "Network",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkSecurityGroups"
+          },
+          {
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].direction",
+                    "equals": "Inbound"
+                  },
+                  {
+                    "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].protocol",
+                    "equals": "Tcp"
+                  },
+                  {
+                    "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].destinationPortRange",
+                    "equals": "80"
+                  },
+                  {
+                    "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].access",
+                    "equals": "Allow"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Azure Cache for Redis with public network access enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Azure Cache for Redis has public network access disabled by denying instances where publicNetworkAccess is set to 'Enabled'.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Cache/redis"
+          },
+          {
+            "field": "Microsoft.Cache/redis/publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

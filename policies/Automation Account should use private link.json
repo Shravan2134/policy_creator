@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Automation Accounts Without Private Link",
+    "description": "This policy denies creation or update of Automation Accounts that do not have Private Link configured. An Automation Account is compliant only when it has at least one private endpoint connection attached.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Automation/automationAccounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Automation/automationAccounts/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

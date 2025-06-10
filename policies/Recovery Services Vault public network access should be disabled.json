@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Recovery Services Vault with Public Network Access Enabled",
+    "description": "This policy denies the creation or update of Recovery Services Vaults that have public network access enabled. Recovery Services Vaults must have public network access disabled.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.RecoveryServices/vaults"
+          },
+          {
+            "field": "Microsoft.RecoveryServices/vaults/publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

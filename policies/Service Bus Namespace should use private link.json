@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Service Bus Namespace Without Private Link",
+    "description": "This policy prevents the creation or update of Service Bus Namespaces that are not configured with Private Link. A compliant Service Bus Namespace must have at least one private endpoint connection defined.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ServiceBus/namespaces"
+          },
+          {
+            "not": {
+              "field": "Microsoft.ServiceBus/namespaces/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

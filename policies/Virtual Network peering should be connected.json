@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Virtual Network Peering if not connected",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Virtual Network peerings are in a 'Connected' state. If a peering resource is not connected, the deployment or update is denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworks/peerings"
+          },
+          {
+            "field": "Microsoft.Network/virtualNetworks/peerings/peeringState",
+            "notEquals": "Connected"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

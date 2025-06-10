@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Databricks Workspace Without Double Encryption for DBFS Root",
+    "description": "This policy denies the creation or update of Azure Databricks Workspaces unless Infrastructure Encryption is enabled to provide double encryption for DBFS root. The property 'properties.enableInfrastructureEncryption' must be set to true.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Databricks/workspaces"
+          },
+          {
+            "field": "Microsoft.Databricks/workspaces/properties.enableInfrastructureEncryption",
+            "notEquals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

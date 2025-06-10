@@ -1,0 +1,32 @@
+{
+  "properties": {
+    "displayName": "Deny SQL Server Auditing with Retention < 90 Days",
+    "description": "This policy denies the creation or update of SQL Server auditing settings that use a storage account as the audit destination if the retention period is set to less than 90 days.",
+    "metadata": {
+      "category": "Auditing",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Sql/servers/auditingSettings"
+          },
+          {
+            "field": "Microsoft.Sql/servers/auditingSettings/properties.storageEndpoint",
+            "exists": "true"
+          },
+          {
+            "field": "Microsoft.Sql/servers/auditingSettings/properties.retentionDays",
+            "less": 90
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

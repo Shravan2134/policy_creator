@@ -1,0 +1,46 @@
+{
+  "properties": {
+    "displayName": "Deny App Service Plans that do not support Private Link for Web Apps",
+    "description": "This policy denies the creation or update of App Service Plans for Web Apps if their SKU tier does not support Private Link. The SKU must be one of the approved tiers (such as Basic, Standard, PremiumV2, PremiumV3, or IsolatedV2).",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "allowedSkuTiers": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed App Service Plan SKU Tiers",
+          "description": "The allowed SKU tiers for App Service Plans that support Private Link for Web Apps."
+        },
+        "defaultValue": [
+          "Basic",
+          "Standard",
+          "PremiumV2",
+          "PremiumV3",
+          "IsolatedV2"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/serverfarms"
+          },
+          {
+            "not": {
+              "field": "sku.tier",
+              "in": "[parameters('allowedSkuTiers')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

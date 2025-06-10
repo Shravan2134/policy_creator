@@ -1,0 +1,34 @@
+{
+  "properties": {
+    "displayName": "Deny Azure Cache for Redis not running approved version",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Azure Cache for Redis instances are running an approved version that reflects the latest security and operational updates. Update the allowed version parameter as new updates are approved.",
+    "parameters": {
+      "approvedRedisVersion": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Approved Redis Version",
+          "description": "The Redis version that is approved for deployments. Instances running a different version will be denied."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Cache/Redis"
+          },
+          {
+            "field": "Microsoft.Cache/Redis/redisVersion",
+            "notEquals": "[parameters('approvedRedisVersion')]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

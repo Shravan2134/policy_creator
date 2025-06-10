@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Automation Account Without Customer-Managed Key Encryption",
+    "description": "This policy denies the creation or update of Automation Accounts unless they are encrypted using a customer-managed key (CMK). The 'encryption.keySource' property must be set to 'CustomerKey'.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Automation/automationAccounts"
+          },
+          {
+            "field": "Microsoft.Automation/automationAccounts/encryption.keySource",
+            "notEquals": "CustomerKey"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

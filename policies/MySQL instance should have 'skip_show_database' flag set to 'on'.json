@@ -1,0 +1,32 @@
+{
+  "properties": {
+    "displayName": "Deny MySQL configurations with skip_show_database flag not set to ON",
+    "description": "This policy denies deployment or update of MySQL server configuration resources if the skip_show_database flag is not configured with the value 'ON'. This flag prevents unauthorized users from being able to use the SHOW DATABASES statement.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DBforMySQL/servers/configurations"
+          },
+          {
+            "field": "name",
+            "like": "*/skip_show_database"
+          },
+          {
+            "field": "Microsoft.DBforMySQL/servers/configurations/properties.value",
+            "notEquals": "ON"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

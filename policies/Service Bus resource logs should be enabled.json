@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Service Bus Resource Without Diagnostic Logs Enabled",
+    "description": "This policy prevents the deployment of Service Bus namespaces that do not have diagnostic settings enabled to capture logs.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.ServiceBus/namespaces"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+            "equals": "true"
+          }
+        }
+      }
+    }
+  }
+}

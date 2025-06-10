@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Network Interface with IP forwarding enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Prevents the creation or update of a Network Interface if IP forwarding is enabled. IP forwarding must be disabled.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkInterfaces"
+          },
+          {
+            "field": "Microsoft.Network/networkInterfaces/ipForwarding",
+            "equals": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

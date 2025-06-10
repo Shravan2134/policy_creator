@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "displayName": "Deny Synapse workspaces without customer-managed key",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Ensures that Synapse Analytics workspaces are encrypted with customer-managed keys.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "field": "Microsoft.Synapse/workspaces/encryption.keySource",
+        "notEquals": "Microsoft.KeyVault"
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

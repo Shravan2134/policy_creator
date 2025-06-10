@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny MySQL Flexible Server without geo-redundant backup",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that MySQL Flexible Server has geo-redundant backup enabled.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DBforMySQL/flexibleServers"
+          },
+          {
+            "field": "Microsoft.DBforMySQL/flexibleServers/backup.geoRedundantBackup",
+            "notEquals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

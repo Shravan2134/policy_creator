@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Data Factory Without Private Endpoint",
+    "description": "This policy denies the deployment or update of Azure Data Factory instances that are not configured with a private endpoint.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DataFactory/factories"
+          },
+          {
+            "not": {
+              "field": "Microsoft.DataFactory/factories/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Web Apps Without Failed Request Tracing Enabled",
+    "description": "This policy prevents the creation or update of Web Apps that do not have failed request tracing enabled. The property 'siteConfig.failedRequestsTracingEnabled' must be set to true.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "Microsoft.Web/sites/siteConfig/failedRequestsTracingEnabled",
+            "notEquals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

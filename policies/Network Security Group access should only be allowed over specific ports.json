@@ -1,0 +1,59 @@
+{
+  "properties": {
+    "displayName": "Deny NSG with Inbound Rules Outside Allowed Ports",
+    "description": "This policy denies the creation or update of Network Security Groups if they contain inbound security rules that allow traffic on destination ports not included in the allowed list.",
+    "metadata": {
+      "category": "Network",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "allowedPorts": {
+        "type": "Array",
+        "metadata": {
+          "displayName": "Allowed Ports",
+          "description": "List of allowed destination ports for inbound NSG rules."
+        },
+        "defaultValue": [
+          "80",
+          "443"
+        ]
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkSecurityGroups"
+          },
+          {
+            "anyOf": [
+              {
+                "allOf": [
+                  {
+                    "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].direction",
+                    "equals": "Inbound"
+                  },
+                  {
+                    "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].access",
+                    "equals": "Allow"
+                  },
+                  {
+                    "not": {
+                      "field": "Microsoft.Network/networkSecurityGroups/securityRules[*].destinationPortRange",
+                      "in": "[parameters('allowedPorts')]"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

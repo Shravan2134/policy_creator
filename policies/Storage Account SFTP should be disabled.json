@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Storage Account with SFTP Enabled",
+    "description": "This policy denies the creation or update of Storage Accounts that have SFTP enabled. SFTP must be disabled to meet security requirements.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "field": "Microsoft.Storage/storageAccounts/enableSftp",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

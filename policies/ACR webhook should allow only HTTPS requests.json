@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny ACR Webhook with Insecure Service URL",
+    "description": "This policy denies the creation or update of ACR webhook resources if the serviceUri does not begin with 'https://'. Webhook endpoints must use HTTPS to ensure secure communication.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ContainerRegistry/registries/webhooks"
+          },
+          {
+            "not": {
+              "field": "Microsoft.ContainerRegistry/registries/webhooks/serviceUri",
+              "like": "https://*"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

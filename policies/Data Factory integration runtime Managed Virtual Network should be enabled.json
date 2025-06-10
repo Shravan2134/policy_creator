@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Data Factory Integration Runtime Without Managed Virtual Network Enabled",
+    "description": "This policy denies the deployment of Data Factory integration runtimes if the Managed Virtual Network is not enabled. The integration runtime must have its 'enableManagedVirtualNetwork' property set to true under 'typeProperties.managedVirtualNetworkSettings'.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DataFactory/factories/integrationruntimes"
+          },
+          {
+            "not": {
+              "field": "Microsoft.DataFactory/factories/integrationruntimes/typeProperties.managedVirtualNetworkSettings.enableManagedVirtualNetwork",
+              "equals": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

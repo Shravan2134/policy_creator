@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Backup Vault if Soft Delete is not enabled",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Ensures that Backup Vaults (Recovery Services vaults) have soft delete enabled.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.RecoveryServices/vaults"
+          },
+          {
+            "field": "Microsoft.RecoveryServices/vaults/security.softDelete",
+            "notEquals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Key Vault without Diagnostic Logs Enabled",
+    "description": "This policy denies the creation of Key Vaults that do not have diagnostic settings enabled. Diagnostic logs must be configured (via Microsoft.Insights/diagnosticSettings) to capture access and event data.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.KeyVault/vaults"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+            "equals": "true"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Azure AI Search with Public Network Access Enabled",
+    "description": "This policy denies the creation of Azure AI Search services with public network access enabled. Public network access should be disabled for enhanced security.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Search/searchServices"
+          },
+          {
+            "field": "Microsoft.Search/searchServices/publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Web App if CORS does not allow all origins ('*')",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Ensures that Web App (App Service) CORS settings include an allowed origin of '*' so that every resource can access the app.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "not": {
+              "field": "siteConfig.cors.allowedOrigins",
+              "contains": "*"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

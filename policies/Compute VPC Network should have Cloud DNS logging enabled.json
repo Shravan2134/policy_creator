@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny VPC Networks Without Cloud DNS Logging Enabled",
+    "description": "This policy denies the creation or update of a Compute VPC Network (Virtual Network) if it does not have Cloud DNS logging enabled. The configuration requires that a diagnostic settings resource exists with the log category 'CloudDnsLogging' enabled.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Network/virtualNetworks"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*].category",
+                "equals": "CloudDnsLogging"
+              },
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+                "equals": "true"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

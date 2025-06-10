@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Backup Vault without immutability settings enabled",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Ensures that Recovery Services vaults (Backup Vaults) have immutability settings enabled.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.RecoveryServices/vaults"
+          },
+          {
+            "field": "Microsoft.RecoveryServices/vaults/security.immutability",
+            "notEquals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

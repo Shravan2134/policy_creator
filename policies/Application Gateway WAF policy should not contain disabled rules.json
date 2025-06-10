@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Application Gateway WAF Policy with Disabled Rules",
+    "description": "This policy denies the creation or update of Application Gateway WAF Policies that have any disabled rule groups configured. All rules must be enabled.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies"
+          },
+          {
+            "field": "Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/managedRules/disabledRuleGroups",
+            "notEquals": []
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

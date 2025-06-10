@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Data Factory Public Endpoint Access",
+    "description": "This policy denies the creation or update of Azure Data Factory resources when public network access is enabled. Data Factory must not have a public endpoint configured.",
+    "metadata": {
+      "category": "Network",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DataFactory/factories"
+          },
+          {
+            "field": "Microsoft.DataFactory/factories/publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

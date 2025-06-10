@@ -1,0 +1,45 @@
+{
+  "properties": {
+    "displayName": "Deny KMS Keys Not Rotated Within 365 Days",
+    "description": "This policy denies the creation or update of KMS keys that have not been rotated within the last 365 days. Each key must have a tag 'LastRotationDate' (formatted as YYYY-MM-DD) that is on or after the specified cutoff date.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "minRotationDate": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Minimum Allowed Last Rotation Date",
+          "description": "Keys must have been rotated on or after this date (YYYY-MM-DD). Update this parameter regularly (today’s date minus 365 days)."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.KeyVault/vaults/keys"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "tags['LastRotationDate']",
+                "exists": "false"
+              },
+              {
+                "field": "tags['LastRotationDate']",
+                "less": "[parameters('minRotationDate')]"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

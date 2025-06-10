@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Storage Account Diagnostic Settings without Log Analytics",
+    "description": "This policy prevents Storage Account resources from being deployed or updated unless their diagnostic settings are configured to send logs to a Log Analytics workspace. The diagnostic settings must have the 'workspaceId' property set.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Storage/storageAccounts"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+            "exists": true
+          }
+        }
+      }
+    }
+  }
+}

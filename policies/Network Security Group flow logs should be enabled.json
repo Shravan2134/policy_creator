@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny NSG Without Flow Logs Enabled",
+    "description": "This policy denies the creation or update of Network Security Groups that do not have NSG flow logs configured. A diagnostic settings resource must exist for the NSG with logs for the 'NetworkSecurityGroupFlowEvent' category enabled.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Network/networkSecurityGroups"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*].category",
+                "equals": "NetworkSecurityGroupFlowEvent"
+              },
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+                "equals": "true"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "displayName": "Deny Cloud Run Service with Overly Permissive Ingress",
+    "description": "This policy denies the creation or update of Cloud Run Service resources if their ingress setting is overly permissive. Only 'internal' or 'internal-and-cloud-load-balancing' ingress values are allowed.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "allowedIngressSettings": {
+        "type": "Array",
+        "defaultValue": [
+          "internal",
+          "internal-and-cloud-load-balancing"
+        ],
+        "metadata": {
+          "displayName": "Allowed Ingress Settings",
+          "description": "The allowed ingress settings for Cloud Run Services. Any ingress setting not in this list (such as 'all') is deemed overly permissive."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Your.Custom.CloudRunService"
+          },
+          {
+            "not": {
+              "field": "Your.Custom.CloudRunService/spec/ingress",
+              "in": "[parameters('allowedIngressSettings')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

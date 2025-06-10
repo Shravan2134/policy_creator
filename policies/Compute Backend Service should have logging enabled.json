@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny Compute Backend Service Without Logging Enabled",
+    "description": "This policy denies the creation or update of Compute Backend Service resources if logging is not enabled. A diagnostic settings resource with a log configuration for 'BackendServiceLogs' must exist and be enabled.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Compute/backendServices"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*].category",
+                "equals": "BackendServiceLogs"
+              },
+              {
+                "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+                "equals": "true"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

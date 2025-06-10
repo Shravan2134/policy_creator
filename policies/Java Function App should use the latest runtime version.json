@@ -1,0 +1,32 @@
+{
+  "properties": {
+    "displayName": "Deny Java Function App Not Using Latest Runtime (Java 11)",
+    "description": "This policy prevents the creation or update of Java Function Apps that are not using the latest runtime version (Java 11).",
+    "metadata": {
+      "category": "Web",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "kind",
+            "contains": "functionapp"
+          },
+          {
+            "field": "Microsoft.Web/sites/siteConfig/javaVersion",
+            "notEquals": "11"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

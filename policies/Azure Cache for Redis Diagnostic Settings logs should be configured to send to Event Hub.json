@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Azure Cache for Redis without diagnostics sending logs to Event Hub",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Azure Cache for Redis resources are configured with diagnostic settings that send logs to an Event Hub. If an Azure Cache for Redis instance does not have at least one diagnostic settings configuration with an eventHubAuthorizationRuleId, the deployment or update is denied.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Cache/redis"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Insights/diagnosticSettings[*].eventHubAuthorizationRuleId",
+              "exists": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "displayName": "Deny Databricks Workspace Without Approved Private Link Endpoints",
+    "description": "This policy denies the deployment or update of an Azure Databricks workspace unless at least one private endpoint connection is present and approved. Each private link endpoint connection must have its 'properties.privateLinkServiceConnectionState.status' set to 'Approved'.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Databricks/workspaces"
+          },
+          {
+            "not": {
+              "details": {
+                "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+                "existenceCondition": {
+                  "field": "Microsoft.Databricks/workspaces/privateEndpointConnections/properties.privateLinkServiceConnectionState.status",
+                  "equals": "Approved"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

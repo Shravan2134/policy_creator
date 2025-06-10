@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Network Interfaces with IP Forwarding Enabled",
+    "description": "This policy denies the creation or update of network interfaces if IP forwarding is enabled. Virtual Machines attached to these NICs are thereby prevented from being configured for IP forwarding.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkInterfaces"
+          },
+          {
+            "field": "Microsoft.Network/networkInterfaces/ipForwarding",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

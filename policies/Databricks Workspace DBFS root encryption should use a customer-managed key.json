@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny Databricks Workspace DBFS Root Encryption Without CMK",
+    "description": "This policy denies the creation or update of Azure Databricks workspaces unless the DBFS root encryption is configured to use a customer-managed key. The property 'encryption.dbfsRootKeySource' must be set to 'CustomerKey'.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Databricks/workspaces"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Databricks/workspaces/encryption.dbfsRootKeySource",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.Databricks/workspaces/encryption.dbfsRootKeySource",
+                "notEquals": "CustomerKey"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

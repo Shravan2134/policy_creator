@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Automation Account with Public Network Access Enabled",
+    "description": "This policy denies the creation or update of Automation Accounts if public network access is not disabled. Automation Accounts must have public network access set to 'Disabled' to ensure they are not exposed on the public internet.",
+    "metadata": {
+      "category": "Automation",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Automation/automationAccounts"
+          },
+          {
+            "field": "Microsoft.Automation/automationAccounts/properties.publicNetworkAccess",
+            "notEquals": "Disabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

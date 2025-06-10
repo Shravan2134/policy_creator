@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "displayName": "Deny Event Hub Namespace Authorization Rules",
+    "description": "This policy denies the creation or update of Event Hub Namespace Authorization Rule resources. Enforcing this policy prevents Event Hub namespaces from being configured with shared access authorization rules.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.EventHub/namespaces/authorizationRules"
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

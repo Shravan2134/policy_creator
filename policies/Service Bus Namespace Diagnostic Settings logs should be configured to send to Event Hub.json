@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Service Bus Namespace without Event Hub Diagnostic Settings",
+    "description": "This policy prevents the deployment of Service Bus namespaces unless they have diagnostic settings configured to send logs to an Event Hub. The diagnostic settings must have the 'eventHubAuthorizationRuleId' property configured.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.ServiceBus/namespaces"
+      },
+      "then": {
+        "effect": "deny",
+        "details": {
+          "type": "Microsoft.Insights/diagnosticSettings",
+          "existenceScope": "resource",
+          "existenceCondition": {
+            "field": "Microsoft.Insights/diagnosticSettings/eventHubAuthorizationRuleId",
+            "exists": true
+          }
+        }
+      }
+    }
+  }
+}

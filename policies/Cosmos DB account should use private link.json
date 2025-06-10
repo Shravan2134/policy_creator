@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Cosmos DB Account Without Private Link",
+    "description": "This policy denies the creation of Cosmos DB accounts that are not configured with a private link. At least one private endpoint connection must be configured.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DocumentDB/databaseAccounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.DocumentDB/databaseAccounts/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

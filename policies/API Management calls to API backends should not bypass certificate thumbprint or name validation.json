@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny API Management Backends Bypassing Certificate Validation",
+    "description": "This policy denies the creation or update of API Management backends if they bypass certificate thumbprint or name validation. Both validations must be enforced for secure communications with API backends.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ApiManagement/service/backends"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ApiManagement/service/backends/skipCertificateThumbprintValidation",
+                "equals": true
+              },
+              {
+                "field": "Microsoft.ApiManagement/service/backends/skipCertificateNameValidation",
+                "equals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

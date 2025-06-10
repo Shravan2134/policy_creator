@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny VPN Gateway Connection Without Custom IPsec/IKE Policy",
+    "description": "This policy denies the creation or update of VPN Gateway Connection resources if a custom IPsec/IKE policy is not configured. The connection must have the 'ipsecPolicies' property defined and non-empty.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/connections"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Network/connections/properties.ipsecPolicies",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.Network/connections/properties.ipsecPolicies",
+                "equals": []
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

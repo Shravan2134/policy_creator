@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny AKS clusters without diagnostic settings logs enabled",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that AKS clusters have diagnostic settings logs enabled for monitoring and compliance.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ContainerService/managedClusters"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Insights/diagnosticSettings[*].logs[*].enabled",
+              "equals": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Cosmos DB Account Without Advanced Threat Protection Enabled",
+    "description": "This policy prevents the deployment of Cosmos DB accounts unless Advanced Threat Protection is enabled.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DocumentDB/databaseAccounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.DocumentDB/databaseAccounts/advancedThreatProtectionSettings/state",
+              "equals": "Enabled"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

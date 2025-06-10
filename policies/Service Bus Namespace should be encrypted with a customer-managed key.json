@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny Service Bus Namespace Without Customer-Managed Key Encryption",
+    "description": "This policy denies the creation or update of Service Bus Namespace resources that are not encrypted using a customer-managed key. The encryption configuration must exist and the 'encryption.keySource' property must be set to 'CustomerKey'.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ServiceBus/namespaces"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ServiceBus/namespaces/encryption",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.ServiceBus/namespaces/encryption.keySource",
+                "notEquals": "CustomerKey"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

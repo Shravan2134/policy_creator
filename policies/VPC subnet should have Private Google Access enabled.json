@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny VPC Subnets Without Private Google Access Enabled",
+    "description": "This policy denies the creation or update of VPC subnets if the custom property 'privateGoogleAccess' is not set to 'true'. The setting is required to ensure that the subnet uses Private Google Access.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworks/subnets"
+          },
+          {
+            "field": "Microsoft.Network/virtualNetworks/subnets/privateGoogleAccess",
+            "notEquals": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

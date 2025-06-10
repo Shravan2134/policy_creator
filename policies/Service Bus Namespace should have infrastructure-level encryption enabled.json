@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Service Bus Namespace Without Infrastructure-level Encryption",
+    "description": "This policy prevents the creation of Service Bus Namespaces unless infrastructure-level encryption is enabled. The 'infrastructureEncryption' property must be set to true.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ServiceBus/namespaces"
+          },
+          {
+            "not": {
+              "field": "Microsoft.ServiceBus/namespaces/infrastructureEncryption",
+              "equals": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

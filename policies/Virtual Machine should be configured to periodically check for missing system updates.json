@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "displayName": "Deny Virtual Machines Without Periodic Update Assessment",
+    "description": "This policy denies the creation or update of Virtual Machines unless they are configured to periodically check for missing system updates. The VM must have its update assessment setting (patchProfile.assessmentMode) set to 'AutomaticByPlatform'.",
+    "metadata": {
+      "category": "Compute",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Compute/virtualMachines/patchProfile.assessmentMode",
+                "notEquals": "AutomaticByPlatform"
+              },
+              {
+                "field": "Microsoft.Compute/virtualMachines/patchProfile.assessmentMode",
+                "exists": "false"
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

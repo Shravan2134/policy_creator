@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Key Vault keys not rotated within 90 days",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Ensures that Key Vault keys are rotated within a period of 90 days.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "Microsoft.KeyVault/vaults/keys.attributes.expirationDate",
+            "exists": "true"
+          },
+          {
+            "field": "Microsoft.KeyVault/vaults/keys.attributes.expirationDate",
+            "greater": "[addDays(field('Microsoft.KeyVault/vaults/keys.attributes.created'), 90)]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

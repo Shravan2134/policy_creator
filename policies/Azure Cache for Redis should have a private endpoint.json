@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "displayName": "Deny Azure Cache for Redis without private endpoint",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures that Azure Cache for Redis is configured with a private endpoint by denying instances with no private endpoint connections.",
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Cache/redis"
+          },
+          {
+            "field": "Microsoft.Cache/redis/privateEndpointConnections.count",
+            "less": 1
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny Storage Account With Public Blob Access",
+    "description": "This policy prevents the creation of Storage Accounts that allow public access to blob containers by ensuring the 'allowBlobPublicAccess' property is set to false.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "field": "Microsoft.Storage/storageAccounts/allowBlobPublicAccess",
+            "equals": true
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

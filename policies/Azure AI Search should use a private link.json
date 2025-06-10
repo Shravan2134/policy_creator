@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Azure AI Search Without Private Link",
+    "description": "This policy denies the creation of Azure AI Search services that are not configured with a private link.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Search/searchServices"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Search/searchServices/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Databricks Workspace Not Deployed in a Virtual Network",
+    "description": "This policy denies the creation or update of Azure Databricks workspaces that are not deployed into a virtual network. A compliant workspace must have the 'customVirtualNetworkId' property defined in its properties.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Databricks/workspaces"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Databricks/workspaces/properties.customVirtualNetworkId",
+              "exists": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

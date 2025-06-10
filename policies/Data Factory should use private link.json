@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Data Factory Without Private Link",
+    "description": "This policy denies the creation or update of Azure Data Factory resources that are not configured to use a private link for secure connectivity.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DataFactory/factories"
+          },
+          {
+            "not": {
+              "field": "Microsoft.DataFactory/factories/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

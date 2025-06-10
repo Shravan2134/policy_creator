@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny NSG Flow Logs with Retention Less Than 90 Days",
+    "description": "This policy denies the creation or update of NSG flow logs if the retention period is set to less than 90 days.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/networkWatchers/flowLogs"
+          },
+          {
+            "field": "Microsoft.Network/networkWatchers/flowLogs/retentionPolicy.days",
+            "lessThan": 90
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "properties": {
+    "displayName": "Deny Cloud Function Without Restricted Inbound Requests",
+    "description": "This policy denies the creation or update of Cloud Functions (Function Apps) if inbound requests are not properly restricted using ipSecurityRestrictions. Either the IP restrictions must be defined, or an overly permissive rule (e.g. allowing 0.0.0.0/0) must not exist.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "kind",
+            "contains": "functionapp"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Web/sites/siteConfig/ipSecurityRestrictions",
+                "exists": "false"
+              },
+              {
+                "field": "Microsoft.Web/sites/siteConfig/ipSecurityRestrictions",
+                "equals": []
+              },
+              {
+                "allOf": [
+                  {
+                    "field": "Microsoft.Web/sites/siteConfig/ipSecurityRestrictions[*].ipAddress",
+                    "equals": "0.0.0.0/0"
+                  },
+                  {
+                    "field": "Microsoft.Web/sites/siteConfig/ipSecurityRestrictions[*].action",
+                    "equals": "Allow"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

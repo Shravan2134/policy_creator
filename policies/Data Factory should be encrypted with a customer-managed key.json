@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Data Factory Without Customer-Managed Key Encryption",
+    "description": "This policy prevents the creation of Data Factory resources that are not encrypted with a customer-managed key stored in Azure Key Vault.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.DataFactory/factories"
+          },
+          {
+            "not": {
+              "field": "Microsoft.DataFactory/factories/encryption.keySource",
+              "equals": "Microsoft.KeyVault"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

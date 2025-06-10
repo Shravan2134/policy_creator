@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "displayName": "Deny Databricks Workspace Without Private Endpoint",
+    "description": "This policy denies the creation or update of Azure Databricks workspaces unless they have at least one private endpoint connection configured. A compliant workspace must have a private endpoint to ensure its connectivity does not traverse the public internet.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Databricks/workspaces"
+          },
+          {
+            "not": {
+              "details": {
+                "type": "Microsoft.Databricks/workspaces/privateEndpointConnections",
+                "existenceCondition": {
+                  "field": "name",
+                  "exists": "true"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

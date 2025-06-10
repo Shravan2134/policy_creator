@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "displayName": "Deny OpenAI Service With Public Network Access Enabled",
+    "description": "This policy denies the creation of OpenAI Service resources that have public network access enabled. To enforce a restricted network posture, public network access must be disabled.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.CognitiveServices/accounts"
+          },
+          {
+            "field": "Microsoft.CognitiveServices/accounts/publicNetworkAccess",
+            "equals": "Enabled"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
