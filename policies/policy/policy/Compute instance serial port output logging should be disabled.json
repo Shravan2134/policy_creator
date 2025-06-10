@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Compute Instances with Serial Port Output Logging Enabled",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Compute instances that have serial port output logging enabled.",
+      "metadata": {
+        "category": "Compute Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/metadata.serial-port-logging-enable",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

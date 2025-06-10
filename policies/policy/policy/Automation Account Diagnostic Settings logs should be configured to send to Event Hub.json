@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Automation Account Diagnostic Settings logs should be configured to send to Event Hub",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Automation Accounts if diagnostic settings logs are not configured to send to Event Hub.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Automation"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Automation/automationAccounts"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Automation/automationAccounts/diagnosticSettings[*].eventHubAuthorizationRuleId",
+                "exists": false
+              },
+              {
+                "field": "Microsoft.Automation/automationAccounts/diagnosticSettings[*].eventHubAuthorizationRuleId",
+                "equals": ""
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

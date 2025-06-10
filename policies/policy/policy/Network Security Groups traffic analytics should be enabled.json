@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny NSGs without Traffic Analytics Enabled",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Network Security Groups that do not have Traffic Analytics enabled.",
+      "metadata": {
+        "category": "Network Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/networkSecurityGroups"
+            },
+            {
+              "field": "Microsoft.Network/networkWatchers/flowLogs.flowAnalyticsConfiguration.networkWatcherFlowAnalyticsConfiguration.enabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

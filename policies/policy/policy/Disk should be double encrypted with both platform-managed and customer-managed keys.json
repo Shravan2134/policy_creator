@@ -1,0 +1,41 @@
+{
+    "properties": {
+      "displayName": "Deny Managed Disks without Double Encryption",
+      "policyType": "Custom",
+      "mode": "Indexed",
+      "description": "This policy denies Managed Disks that are not encrypted with both platform-managed and customer-managed keys.",
+      "metadata": {
+        "category": "Compute",
+        "version": "1.0.0"
+      },
+      "parameters": {
+        "effect": {
+          "type": "string",
+          "defaultValue": "Deny",
+          "allowedValues": ["Audit", "Deny", "Disabled"],
+          "metadata": {
+            "displayName": "Effect",
+            "description": "Enable or disable the execution of the policy"
+          }
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/diskEncryptionSets"
+            },
+            {
+              "field": "Microsoft.Compute/diskEncryptionSets/encryptionType",
+              "notEquals": "EncryptionAtRestWithPlatformAndCustomerKeys"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

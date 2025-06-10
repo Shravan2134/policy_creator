@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Virtual Machines without Guest Configuration Extension",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Virtual Machines that do not have the Guest Configuration extension installed.",
+      "metadata": {
+        "category": "Virtual Machine Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines/extensions[?(@.name=='AzurePolicyforWindows' || @.name=='AzurePolicyforLinux')]",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

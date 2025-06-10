@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Virtual Machine Scale Set without Diagnostic Logs",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies Virtual Machine Scale Sets that do not have Diagnostic Logs enabled.",
+      "metadata": {
+        "category": "Virtual Machine Scale Sets"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachineScaleSets"
+            },
+            {
+              "field": "Microsoft.Insights/diagnosticSettings",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

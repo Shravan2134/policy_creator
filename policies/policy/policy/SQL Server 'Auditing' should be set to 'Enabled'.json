@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny SQL Server without Auditing Enabled",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies SQL Server instances that do not have Auditing enabled.",
+      "metadata": {
+        "category": "SQL Server Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Sql/servers"
+            },
+            {
+              "field": "Microsoft.Sql/servers/auditingSettings.state",
+              "equals": "Disabled"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

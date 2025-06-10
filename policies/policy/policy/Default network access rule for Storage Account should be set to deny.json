@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Default network access rule for Storage Account should be set to deny",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of Storage Accounts if the default network access rule is not set to deny.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Storage"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
+            "notEquals": "Deny"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
