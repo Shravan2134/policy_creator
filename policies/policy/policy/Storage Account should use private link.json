@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account Without Private Link",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account instances that do not use a private link.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts.privateEndpointConnections[*].id",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

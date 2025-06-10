@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Virtual Network Subnet Without NSG",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Virtual Network subnets that do not have a Network Security Group (NSG) associated.",
+      "metadata": {
+        "category": "Networking Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/virtualNetworks/subnets"
+            },
+            {
+              "field": "Microsoft.Network/virtualNetworks/subnets.networkSecurityGroup.id",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account File Services Using SMB Version Below 3.1.1",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account instances that use an SMB version lower than 3.1.1 for File Services.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts/fileServices"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts/fileServices.protocolSettings.smb.version",
+              "lessThan": "3.1.1"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

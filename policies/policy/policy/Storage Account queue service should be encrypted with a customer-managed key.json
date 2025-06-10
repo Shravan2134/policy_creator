@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account Queue Service Without Customer-Managed Key Encryption",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account instances that do not have Queue Service encrypted with a customer-managed key.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts/encryption.services.queue.keyType",
+              "notEquals": "Microsoft.Keyvault"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

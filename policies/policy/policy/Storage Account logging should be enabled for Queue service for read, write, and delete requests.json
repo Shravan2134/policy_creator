@@ -1,0 +1,38 @@
+{
+    "properties": {
+      "displayName": "Deny Storage Account Without Queue Service Logging",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account instances that do not have logging enabled for Queue service read, write, and delete requests.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts.queueService.logging.read",
+              "equals": "false"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts.queueService.logging.write",
+              "equals": "false"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts.queueService.logging.delete",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  

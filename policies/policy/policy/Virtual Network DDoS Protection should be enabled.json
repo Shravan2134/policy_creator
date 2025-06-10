@@ -1,0 +1,30 @@
+{
+    "properties": {
+      "displayName": "Deny Virtual Network Without DDoS Protection",
+      "policyType": "BuiltIn",
+      "mode": "Indexed",
+      "description": "This policy denies Virtual Network instances that do not have DDoS Protection enabled.",
+      "metadata": {
+        "category": "Networking Security"
+      },
+      "parameters": {},
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Network/virtualNetworks"
+            },
+            {
+              "field": "Microsoft.Network/virtualNetworks.ddosProtectionPlan.id",
+              "exists": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "deny"
+        }
+      }
+    }
+  }
+  
