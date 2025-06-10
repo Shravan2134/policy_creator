@@ -1,0 +1,41 @@
+{
+    "properties": {
+      "displayName": "Deny Publicly Exposed PaaS Database Server",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies PaaS database servers that allow public network access.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.DBforPostgreSQL/servers",
+                "Microsoft.DBforMySQL/servers",
+                "Microsoft.Sql/servers"
+              ]
+            },
+            {
+              "field": "Microsoft.DBforPostgreSQL/servers.publicNetworkAccess",
+              "equals": "Enabled"
+            },
+            {
+              "field": "Microsoft.DBforMySQL/servers.publicNetworkAccess",
+              "equals": "Enabled"
+            },
+            {
+              "field": "Microsoft.Sql/servers.publicNetworkAccess",
+              "equals": "Enabled"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

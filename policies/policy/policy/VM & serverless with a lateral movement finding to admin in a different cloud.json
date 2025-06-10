@@ -1,0 +1,36 @@
+{
+    "properties": {
+      "displayName": "Deny VM/Serverless With Lateral Movement to Admin in a Different Cloud",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM and serverless workloads that have lateral movement findings leading to admin access in a different cloud.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites"
+              ]
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.lateralMovementDetected",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.crossCloudAdminAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

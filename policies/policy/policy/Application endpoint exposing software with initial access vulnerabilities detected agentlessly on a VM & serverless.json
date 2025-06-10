@@ -1,0 +1,40 @@
+{
+    "properties": {
+      "displayName": "Deny Application Endpoint Exposing Initial Access Vulnerabilities",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM and serverless workloads that expose software with initial access vulnerabilities detected agentlessly.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites"
+              ]
+            },
+            {
+              "field": "Microsoft.Network/publicIpAddresses",
+              "exists": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.agentlessVulnerabilityDetection",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.vulnerabilityStatus",
+              "equals": "High"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,29 @@
+{
+    "properties": {
+      "displayName": "Deny GKE Cluster Without Linux Auditd Logging",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies GKE clusters that do not have Linux auditd logging enabled.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Google.KubernetesEngine/clusters"
+            },
+            {
+              "field": "Google.KubernetesEngine/clusters.auditLoggingEnabled",
+              "equals": "false"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

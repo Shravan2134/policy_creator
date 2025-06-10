@@ -1,0 +1,44 @@
+{
+    "properties": {
+      "displayName": "Deny VM With Software Approaching End-of-Life",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM instances that run software versions scheduled to reach end-of-life next month.",
+      "metadata": {
+        "category": "Security Compliance"
+      },
+      "parameters": {
+        "effect": {
+          "type": "String",
+          "defaultValue": "Deny",
+          "allowedValues": ["Audit", "Deny", "Disabled"],
+          "metadata": {
+            "displayName": "Effect",
+            "description": "The effect determines what happens when the policy rule is evaluated to match."
+          }
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines.osProfile.linuxConfiguration.osVersion",
+              "in": [
+                "Ubuntu 18.04",
+                "CentOS 7",
+                "Windows Server 2012"
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

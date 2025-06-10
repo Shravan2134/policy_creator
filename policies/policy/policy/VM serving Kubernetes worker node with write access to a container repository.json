@@ -1,0 +1,33 @@
+{
+    "properties": {
+      "displayName": "Deny VM Serving Kubernetes Worker Node With Write Access to a Container Repository",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM instances serving Kubernetes worker nodes that have write access to a container repository.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Kubernetes/workerNodes",
+              "exists": "true"
+            },
+            {
+              "field": "Microsoft.ContainerRegistry/repositories.writeAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

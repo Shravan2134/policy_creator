@@ -1,0 +1,40 @@
+{
+    "properties": {
+      "displayName": "Deny Internal VM/Serverless With Cleartext Cloud Keys",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM and serverless workloads that store cleartext cloud keys granting high privileges to external subscriptions.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites"
+              ]
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.cloudKeyCleartext",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.externalSubscriptionAccess",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.highPrivilegeAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,37 @@
+{
+    "properties": {
+      "displayName": "Deny VM With Kernel Vulnerabilities Running a Container",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM instances that run containers on a vulnerable kernel.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines.osProfile.kernelVersion",
+              "in": [
+                "Linux 4.4",
+                "Linux 4.15",
+                "Linux 5.4"
+              ]
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines.containerRuntime",
+              "exists": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,29 @@
+{
+    "properties": {
+      "displayName": "Deny Publicly Readable Blob Containers",
+      "policyType": "Custom",
+      "mode": "Indexed",
+      "description": "This policy denies Storage Account instances that allow anonymous read access to blob containers.",
+      "metadata": {
+        "category": "Storage Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "field": "Microsoft.Storage/storageAccounts.allowBlobPublicAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

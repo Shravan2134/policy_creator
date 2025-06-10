@@ -1,0 +1,37 @@
+{
+    "properties": {
+      "displayName": "Deny Internal Resource With Cleartext SAS Tokens",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies internal resources that store cleartext SAS tokens granting high privileges to a storage account.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites",
+                "Microsoft.Storage/storageAccounts"
+              ]
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.sasTokenCleartext",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.highPrivilegeAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

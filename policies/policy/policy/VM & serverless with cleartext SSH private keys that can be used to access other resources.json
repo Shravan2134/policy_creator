@@ -1,0 +1,43 @@
+{
+    "properties": {
+      "displayName": "Deny VM/Serverless With Cleartext SSH Private Keys",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM and serverless workloads that store SSH private keys in cleartext, preventing unauthorized access risks.",
+      "metadata": {
+        "category": "Security"
+      },
+      "parameters": {
+        "effect": {
+          "type": "String",
+          "defaultValue": "Deny",
+          "allowedValues": ["Audit", "Deny", "Disabled"],
+          "metadata": {
+            "displayName": "Effect",
+            "description": "The effect determines what happens when the policy rule is evaluated to match."
+          }
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites"
+              ]
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.sshPrivateKeyCleartext",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,33 @@
+{
+    "properties": {
+      "displayName": "Deny Publicly Exposed VM With High Privileges",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM instances that are publicly exposed and have high privileges.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Network/publicIpAddresses",
+              "exists": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.highPrivilegeAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,44 @@
+{
+    "properties": {
+      "displayName": "Deny Containers With End-of-Life Software",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies container instances that run software versions scheduled for end-of-life on the writable layer.",
+      "metadata": {
+        "category": "Security Compliance"
+      },
+      "parameters": {
+        "effect": {
+          "type": "String",
+          "defaultValue": "Deny",
+          "allowedValues": ["Audit", "Deny", "Disabled"],
+          "metadata": {
+            "displayName": "Effect",
+            "description": "The effect determines what happens when the policy rule is evaluated to match."
+          }
+        }
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.ContainerInstance/containerGroups"
+            },
+            {
+              "field": "Microsoft.ContainerInstance/containerGroups.image.osVersion",
+              "in": [
+                "Ubuntu 18.04",
+                "CentOS 7",
+                "Debian 9"
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "[parameters('effect')]"
+        }
+      }
+    }
+  }
+  

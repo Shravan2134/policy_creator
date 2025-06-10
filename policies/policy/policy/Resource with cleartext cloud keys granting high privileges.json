@@ -1,0 +1,37 @@
+{
+    "properties": {
+      "displayName": "Deny Resource With Cleartext Cloud Keys Granting High Privileges",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies resources that store cleartext cloud keys granting high privileges.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites",
+                "Microsoft.Storage/storageAccounts"
+              ]
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.cloudKeyCleartext",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.highPrivilegeAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,37 @@
+{
+    "properties": {
+      "displayName": "Deny Publicly Exposed VM With End-of-Life Software",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies VM instances that are publicly exposed and run software versions scheduled for end-of-life.",
+      "metadata": {
+        "category": "Security Compliance"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "equals": "Microsoft.Compute/virtualMachines"
+            },
+            {
+              "field": "Microsoft.Network/publicIpAddresses",
+              "exists": "true"
+            },
+            {
+              "field": "Microsoft.Compute/virtualMachines.osProfile.linuxConfiguration.osVersion",
+              "in": [
+                "Ubuntu 18.04",
+                "CentOS 7",
+                "Windows Server 2012"
+              ]
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  

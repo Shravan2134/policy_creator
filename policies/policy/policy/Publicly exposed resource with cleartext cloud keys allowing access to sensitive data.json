@@ -1,0 +1,41 @@
+{
+    "properties": {
+      "displayName": "Deny Publicly Exposed Resource With Cleartext Cloud Keys",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "This policy denies publicly exposed resources that store cleartext cloud keys allowing access to sensitive data.",
+      "metadata": {
+        "category": "Security"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [
+            {
+              "field": "type",
+              "in": [
+                "Microsoft.Compute/virtualMachines",
+                "Microsoft.Web/sites",
+                "Microsoft.Storage/storageAccounts"
+              ]
+            },
+            {
+              "field": "Microsoft.Network/publicIpAddresses",
+              "exists": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.cloudKeyCleartext",
+              "equals": "true"
+            },
+            {
+              "field": "Microsoft.Security/securityConfigurations.sensitiveDataAccess",
+              "equals": "true"
+            }
+          ]
+        },
+        "then": {
+          "effect": "Deny"
+        }
+      }
+    }
+  }
+  
