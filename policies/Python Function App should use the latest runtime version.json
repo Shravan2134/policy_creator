@@ -1,0 +1,44 @@
+{
+  "properties": {
+    "displayName": "Deny Python Function App Without Latest Runtime Version",
+    "description": "This policy denies the creation of Python Function Apps that do not use the latest runtime version.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "parameters": {
+      "latestPythonVersion": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Latest Python Runtime Version",
+          "description": "Specify the latest supported Python runtime version for Azure Functions."
+        },
+        "defaultValue": "Python 3.11"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "field": "Microsoft.Web/sites/config.linuxFxVersion",
+            "contains": "Python"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Web/sites/config.linuxFxVersion",
+              "equals": "[parameters('latestPythonVersion')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

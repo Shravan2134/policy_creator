@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Web App Without HTTP Logging Enabled",
+    "description": "This policy denies the creation of Web Apps where HTTP logging is not enabled.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Web/sites/config.httpLoggingEnabled",
+              "equals": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

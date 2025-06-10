@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny Function App Without Application Insights Logging Enabled",
+    "description": "This policy denies the creation of Function Apps where Application Insights logging is not enabled.",
+    "metadata": {
+      "category": "Monitoring",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Web/sites/config.appInsightsEnabled",
+              "equals": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny AI Service Without Customer-Managed Key Encryption",
+    "description": "This policy denies the creation of AI Service resources that are not encrypted with a customer-managed key.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.CognitiveServices/accounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.CognitiveServices/accounts/encryption.keySource",
+              "equals": "Microsoft.KeyVault"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

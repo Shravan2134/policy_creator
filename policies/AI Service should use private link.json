@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny AI Service Without Private Link",
+    "description": "This policy denies the creation of AI Service resources that are not configured with a private link.",
+    "metadata": {
+      "category": "Networking",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.CognitiveServices/accounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.CognitiveServices/accounts/privateEndpointConnections[*]",
+              "exists": true
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

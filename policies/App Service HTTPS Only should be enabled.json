@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "displayName": "Deny App Service Without HTTPS Only Enabled",
+    "description": "This policy denies the creation of App Services where HTTPS Only is not enabled.",
+    "metadata": {
+      "category": "Security",
+      "version": "1.0.0"
+    },
+    "mode": "Indexed",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Web/sites"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Web/sites/config.httpsOnly",
+              "equals": "true"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
