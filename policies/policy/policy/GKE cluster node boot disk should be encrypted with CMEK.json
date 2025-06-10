@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "GKE cluster node boot disk should be encrypted with CMEK",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of GKE clusters if node boot disk is not encrypted with customer-managed keys (CMEK).",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Kubernetes"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ContainerService/managedClusters"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ContainerService/managedClusters/agentPoolProfiles[*].osDisk.encryptionSettings.diskEncryptionSetId",
+                "exists": false
+              },
+              {
+                "field": "Microsoft.ContainerService/managedClusters/agentPoolProfiles[*].osDisk.encryptionSettings.diskEncryptionSetId",
+                "equals": ""
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

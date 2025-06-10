@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "GKE cluster with node pool auto-upgrade enabled should contain at least 3 nodes",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of GKE clusters with node pool auto-upgrade enabled if the node count is less than 3.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Kubernetes"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ContainerService/managedClusters"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ContainerService/managedClusters/agentPoolProfiles[*].enableAutoUpgrade",
+                "equals": true
+              }
+            ]
+          },
+          {
+            "field": "Microsoft.ContainerService/managedClusters/agentPoolProfiles[*].count",
+            "less": 3
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

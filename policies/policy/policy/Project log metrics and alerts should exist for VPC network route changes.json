@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "Project log metrics and alerts should exist for VPC network route changes",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of VPC networks if log metrics and alerts for route changes do not exist.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Networking"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Network/virtualNetworks"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.Network/virtualNetworks/diagnosticSettings[*].logs[*].category",
+                "notEquals": "RouteChanges"
+              },
+              {
+                "field": "Microsoft.Network/virtualNetworks/diagnosticSettings[*].logs[*].enabled",
+                "notEquals": true
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}

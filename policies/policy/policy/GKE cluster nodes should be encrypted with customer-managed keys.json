@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "displayName": "GKE cluster nodes should be encrypted with customer-managed keys",
+    "policyType": "BuiltIn",
+    "mode": "All",
+    "description": "Deny creation or update of GKE clusters if node encryption is not enabled with customer-managed keys.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "Kubernetes"
+    },
+    "parameters": {},
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.ContainerService/managedClusters"
+          },
+          {
+            "anyOf": [
+              {
+                "field": "Microsoft.ContainerService/managedClusters/securityProfile.nodeEncryption.enabled",
+                "notEquals": true
+              },
+              {
+                "field": "Microsoft.ContainerService/managedClusters/securityProfile.nodeEncryption.keyVaultKeyId",
+                "exists": false
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+}
